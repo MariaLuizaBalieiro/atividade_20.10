@@ -1,0 +1,38 @@
+// objetivo: trazer informações sobre os estados do Brasil
+// Data: 20/10
+// autor: Maria Luiza Balieiro 
+// versão: 1.0
+
+
+var estados_cidades = require('./estados_cidades.js')
+
+const getListaDeEstados = function () {
+    let estados_cidades = estados_cidades.estadosCidades
+    const arryEstado = estados_cidades.estados
+    const uf = []
+    const quandidade = arryEstado.length
+    arryEstado.forEach(function (a) {
+        uf.push(a.sigla)
+    })
+    const jsonEstado = {}
+    jsonEstado.uf = uf
+    jsonEstado.quandidade = quandidade
+
+    return jsonEstado
+
+}
+
+const getListaDeEstado = function (nomeEstado){
+    const jsonInformacoes = {}
+    arryEstado.forEach(function(estado){
+        if (estado.sigla.toUpperCase() == nomeEstado.toUpperCase()){
+            jsonInformacoes.uf = estado.sigla
+            jsonInformacoes.descricao = estado.nome
+            jsonInformacoes.capital = estado.capital
+            jsonInformacoes.regiao = estado.regiao
+        }
+    })
+
+    return jsonInformacoes
+
+}
