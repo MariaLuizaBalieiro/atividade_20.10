@@ -43,15 +43,60 @@ app.use((request,response,next)=> {
 })
 
 
+
 // EndPoints: listar a sigla de todos os estados 
 app.get('/estados/sigla', cors(), async function(request, response, next) {
 
-    let controlelistaEstados = require('./modulo/function');
+    let controlelistaEstados = require('./modulo/estados_cidades');
     let estados = controlelistaEstados.getListadeEstados();
  response.json('{teste: API funcionando}');
  response.status(200);
 
 });
+
+// Endpoint: retornaos os dados do estado filtrado pela sigla
+app.get('/estado/sigla/:uf' ,cors(), async function(request, response, next){
+    // Recebe uma variavel encaminhada por pareamento na URL da requisição
+    let siglaEstado = request.params.uf;
+    
+    // importe de arquivos e funções
+    let controledadosEstado = require('./modulo/estados_cidades.js');
+    let dadosEstado = controleDadosEstado.getDadosEstado(siglaEstado);
+
+    if (dadosEstado){
+
+    response.json(dadosEstado);
+    response.status(200); }
+    else{
+        response.json('{erro: Não foi possível encontrar um item}');
+        response.status(404)
+    }
+})
+
+
+
+// endpoint: retorna os dados da capital filtrando pela sigla 
+app.get('/capital/estado' ,cors(), async function(request, response, next){
+//    recebe parametros via query , que são variaveis encaminhadas na URL da requição (?uf=SP)
+    let siglaEstado = request.query.uf;
+    let controleDadosCapital = require ('./modulo/estados_cidades.js');
+    let dadosCapital = controleDadosCapital.getCapitalEstados(siglaEstado);
+    if(dadosCapital){
+        response.json(dadosCapital);
+        response.status(200);
+
+    } else{
+        response.status(404)
+        response.json({erro: 'Não foi possível encontrar um item'})
+    }
+})
+
+
+
+
+
+
+
 
 // executa a API e faz ela ficar aguardando requisições 
 app.listen(8080, function(){
